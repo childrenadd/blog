@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments :: head(~{::title})">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>关于我</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="../static/css/me.css">
+</head>
+<body>
+<nav th:replace="_fragments :: menu(5)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+  <div class="ui container">
+    <div class="ui inverted secondary stackable menu">
+      <h2 class="ui teal header item">Blog</h2>
+      <a href="#" class="m-item item m-mobile-hide"><i class="home icon"></i>首页</a>
+      <a href="#" class="m-item item m-mobile-hide"><i class="idea icon"></i>分类</a>
+      <a href="#" class="m-item item m-mobile-hide"><i class="tags icon"></i>标签</a>
+      <a href="#" class="m-item item m-mobile-hide"><i class="clone icon"></i>归档</a>
+      <a href="#" class="active m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+      <div class="m-item right item m-mobile-hide">
+        <div class="ui icon inverted transparent input">
+          <input type="text" placeholder="Search....">
+          <i class="search link icon"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+    <i class="sidebar icon"></i>
+  </a>
+</nav>
+
+<style>
+  .a{
+    position: relative;
+    width: 700px;
+    height: 420px;
+    border: #fff 10px solid;
+    background-color: rgb(120,140,200);
+    top: 0;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .b{
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    left: 0;
+    margin: 75px 50px;
+    transition: 1s;
+  }
+  .b a{
+    text-decoration: none;
+    color: #fff;
+    font: 900 28px '';
+  }
+  .b h2{
+    /* 鼠标放开时的动画，第一个值是动画的过渡时间
+    第二个值是延迟一秒后执行动画 */
+    transition: .5s 1s;
+    opacity: 0;
+    color: rgb(30,210,200);
+    font-size: 20px;
+  }
+  .b span{
+    transition: .5s 1s;
+    color: #fff;
+    font: 500 15px '';
+    position: absolute;
+    top: 70px;
+  }
+  .c{
+    position: absolute;
+    top: -130px;
+    right: -240px;
+  }
+  .d,.e{
+    position: absolute;
+    right: calc(var(--i)*100px);
+    width: calc(var(--w)*40px);
+    height: 500px;
+    overflow: hidden;
+    border-radius: 100px;
+    transform: rotateZ(220deg) translate(0,0);
+    background: rgb(240,220,150);
+    transition: .5s .5s;
+  }
+  .d:nth-child(2){
+    background: rgb(240,190,230);
+  }
+  .d:nth-child(3){
+    background: rgb(0,229,255);
+  }
+  .d:nth-child(4){
+    background: rgb(64,224,208);
+  }
+  .e{
+    left: -470px;
+    top: -140px;
+    width: 70px;
+    background-color: rgb(90,220,150);
+  }
+  .a:hover .c div{
+    /* 设置延迟动画 */
+    transition: .5s calc(var(--i)*.1s);
+    /* 移动的轨迹 */
+    transform: rotateZ(220deg) translate(-200px,400px);
+  }
+  .a:hover .b{
+    transition: 1s .5s;
+    left: 370px;
+  }
+  .a:hover .b span{
+    transition: 1s .5s;
+    top: 105px;
+  }
+  .a:hover .b h2{
+    transition: 1s .5s;
+    opacity: 1;
+  }
+  .f{  /*头像*/
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    background-size: cover;
+    margin: 70px;
+    opacity: 0;
+    transition: .5s;
+  }
+  .a:hover .f{
+    transition: 1s 1s;
+    opacity: 1;
+  }
+</style>
+
+
+<div class="m-container m-padded-tb-big">
+  <div class="ui container">
+    <div class="ui stackable grid">
+      <div class="eleven wide column">
+        <div class="a">
+          <div class="b">
+            <a href="#">王翔云的博客</a>
+            <h2>邮箱:<br>2793989872@qq.com</h2>
+            <span style="text-align: center;display:block; "><br>万事都要全力以赴</span>
+            <span style="text-align: center;display:block; "><br><br>包括开森  ^_^!!!</span>
+          </div>
+          <div class="c">
+            <div class="d" style="--i:1;--w:1.5"></div>
+            <div class="d" style="--i:2;--w:1.6"></div>
+            <div class="d" style="--i:3;--w:1.4"></div>
+            <div class="d" style="--i:4;--w:1.7"></div>
+            <div class="e" style="--i:1"></div>
+          </div>
+          <div class="f" th:style="'background-image: url('+@{/images/tou.png}+');'"></div>
+        </div>
+      </div>
+      <div class="five wide column">
+        <div class="ui top attached segment">
+          <div class="ui header">关于我</div>
+        </div>
+        <div class="ui attached segment">
+          <p class="m-text">王翔云，一名bupt研究生,往返于0和1的世界</p>
+          <p class="m-text">座右铭：仰望星空的同时也要脚踏实地</p>
+          <p class="m-text">吃喝玩乐乃人生第一大兴趣</p>
+        </div>
+        <div class="ui attached segment">
+          <div class="ui orange basic left pointing label">编程</div>
+          <div class="ui orange basic left pointing label">运动</div>
+          <div class="ui orange basic left pointing label">游戏</div>
+          <div class="ui orange basic left pointing label">音乐</div>
+        </div>
+        <div class="ui attached segment">
+          <div class="ui teal basic label m-margin-tb-tiny">Java</div>
+          <div class="ui teal basic label m-margin-tb-tiny">C++</div>
+          <div class="ui teal basic label m-margin-tb-tiny">MySQL</div>
+          <div class="ui teal basic label m-margin-tb-tiny">Python</div>
+        </div>
+        <div class="ui bottom attached segment">
+          <a href="https://github.com/childrenadd" target="_blank" class="ui circular icon button"><i class="github icon"></i></a>
+          <a href="#" class="ui wechat circular icon button" data-content="Cloud_v-587" data-position="bottom center"><i class="weixin icon"></i></a>
+          <a href="#" class="ui qq circular icon button " data-content="2793989872" data-position="bottom center"><i class="qq icon"></i></a>
+        </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+<footer th:replace="_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive"></footer>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+<!--引入 彩带背景 的js-->
+<!--/*/<th:block th:replace="_fragments::ribbon_background">/*/-->
+<!--/*/</th:block>/*/-->
+<!--引入 鼠标点击特效 的js-->
+<!--/*/<th:block th:replace="_fragments::mouse_onclick">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+  $('.menu.toggle').click(function () {
+    $('.m-item').toggleClass('m-mobile-hide');
+  });
+  $('.wechat').popup({});
+  $('.qq').popup({});
+</script>
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:replace="${title}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../static/css/animate.css" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" href="../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+    <link rel="stylesheet" href="../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+</head>
+<body>
+
+
+<nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item">wxy_Blog</h2>
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="home icon"></i>首页</a>
+            <a href="#" th:href="@{/types/-1}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="idea icon"></i>分类</a>
+            <a href="#" th:href="@{/tags/-1}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="tags icon"></i>标签</a>
+            <a href="#" th:href="@{/archives}" class="m-item item m-mobile-hide" th:classappend="${n==4} ? 'active'"><i class="clone icon"></i>归档</a>
+            <a href="#" th:href="@{/about}" class="m-item item m-mobile-hide" th:classappend="${n==5} ? 'active'"><i class="info icon"></i>关于我</a>
+            <div class="m-item right item m-mobile-hide">
+                <form name="search" action="#" th:action="@{/search}" method="post" target="_blank">
+                    <div class="ui icon inverted transparent input">
+                        <input type="text" name="query" placeholder="Search...." th:value="${query}">
+                        <i onclick="document.forms['search'].submit()" class="search link icon"></i>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-top-right m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+    <div class="ui center aligned container">
+        <div class="ui inverted divided stackable grid">
+            <div class="three wide column">
+                <div class="ui inverted link list">
+                    <div class="item">
+                        <img src="../static/images/wx.jpg" th:src="@{/images/wx.jpg}" class="ui rounded image" alt="" style="width:110px">
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header">随记</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">今日犹见</a>
+                    <a href="#" class="item">虽不似当年心动</a>
+                    <a href="#" class="item">仍一如既往喜欢</a>
+                </div>
+            </div>
+            <div class="three wide column">
+                <h4 class="ui inverted header ui inverted header m-text-thin m-text-spaced">联系我</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">Email:2793989872@qq.com</a>
+                    <a href="#" class="item">VX:Cloud_v-587</a>
+                    <a href="#" class="item">QQ:2793989872</a>
+                </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header m-text-thin m-text-spaced">Blog</h4>
+                <p class="m-text-thin m-text-spaced m-opacity-mini">这是我的第一个博客，欢迎您的来临！！！</p>
+                <br>
+                <a href="http://blog.wxybyr.cloud/admin" class="item" target="_blank">后台管理</a>
+            </div>
+        </div>
+        <div class="ui inverted section divider"></div>
+        <br><div style="color: turquoise;margin-top: -18px" class="ui inverted m-text-thin m-text-spaced">我的博客已运行：<span id="htmer_time" class="item m-text-thin"></span> (*๓´╰╯`๓)</div>
+        <br><p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright ©2021-2022 This Blog by wxy</p>
+    </div>
+    <script>
+        // 运行时间统计
+        function secondToDate(second) {
+            if (!second) {
+                return 0;
+            }
+            var time = new Array(0, 0, 0, 0, 0);
+            if (second >= 365 * 24 * 3600) {
+                time[0] = parseInt(second / (365 * 24 * 3600));
+                second %= 365 * 24 * 3600;
+            }
+            if (second >= 24 * 3600) {
+                time[1] = parseInt(second / (24 * 3600));
+                second %= 24 * 3600;
+            }
+            if (second >= 3600) {
+                time[2] = parseInt(second / 3600);
+                second %= 3600;
+            }
+            if (second >= 60) {
+                time[3] = parseInt(second / 60);
+                second %= 60;
+            }
+            if (second > 0) {
+                time[4] = second;
+            }
+            return time;
+        }
+        function setTime() {
+            /*此处为网站的创建时间*/
+            var create_time = Math.round(new Date(Date.UTC(2021, 05, 01, 10, 00, 00)).getTime() / 1000);
+            var timestamp = Math.round((new Date().getTime() + 8 * 60 * 60 * 1000) / 1000);
+            currentTime = secondToDate((timestamp - create_time));
+            currentTimeHtml = currentTime[0] + '年' + currentTime[1] + '天'
+                + currentTime[2] + '时' + currentTime[3] + '分' + currentTime[4]
+                + '秒';
+            document.getElementById("htmer_time").innerHTML = currentTimeHtml;
+        }
+        setInterval(setTime, 1000);
+    </script>
+</footer>
+
+<th:block th:fragment="script">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.3/jquery.scrollTo.min.js"></script>
+    <script src="../static/lib/waypoint/jquery.waypoints.min.js" th:src="@{/lib/waypoint/jquery.waypoints.min.js}"></script>
+    <script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+    <script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script src="../static/lib/qrcode/qrcode.min.js" th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+    <script src="../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+    <script>
+        $('#newblog-container').load(/*[[@{/footer/newlog}]]*/"/footer/newblog");
+    </script>
+</th:block>
+<!--离开网站时的小提示-->
+<th:block th:fragment="hint_text">
+    <script>
+        window.onload = function () {
+            var OriginTitile = document.title;
+            var titleTime;
+            document.addEventListener('visibilitychange', function () {
+                if (document.hidden) {
+                    $('[rel="shortcut icon"]').attr('href', "/imgs/qq_Avatar.jpg");
+                    document.title = '(●—●)走了吗？';
+                    clearTimeout(titleTime);
+                }
+                else {
+                    $('[rel="shortcut icon"]').attr('href', "/imgs/qq_Avatar.jpg");
+                    //document.title = '(/≧▽≦/)咦！又好了！' + OriginTitile;
+                    document.title = '(/≧▽≦/)回来了！';
+                    titleTime = setTimeout(function () {
+                        document.title = OriginTitile;
+                    }, 2000);
+                }
+            });
+        }
+    </script>
+</th:block>
+
+<!--鼠标点击特效-->
+<th:block th:fragment="mouse_onclick">
+    <script type="text/javascript">
+        //需要jquery插件
+        /* 鼠标特效 */
+        var a_idx = 0;
+        jQuery(document).ready(function($) {
+            $("body").click(function(e) {
+                var a = new Array("富强","民主","文明","和谐","自由","平等","公正","法治","爱国","敬业","诚信","友善");
+                var $i = $("<span></span>").text(a[a_idx]);
+                a_idx = (a_idx + 1) % a.length;
+                var x = e.pageX,
+                    y = e.pageY;
+                $i.css({
+                    "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
+                    "top": y - 20,
+                    "left": x,
+                    "position": "absolute",
+                    "font-weight": "bold",
+                    "color": "rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"
+                });
+                $("body").append($i);
+                $i.animate({
+                        "top": y - 180,
+                        "opacity": 0
+                    },
+                    1500,
+                    function() {
+                        $i.remove();
+                    });
+            });
+        });
+    </script>
+</th:block>
+<!--引入 彩带背景 的js-->
+<th:block th:fragment="ribbon_background">
+    <script async="" type="text/javascript">
+        (function (name, factory) {
+            if (typeof window === "object") {
+                window[name] = factory();
+            }
+        })("Ribbons", function () {
+            var _w = window, _b = document.body, _d = document.documentElement;
+            var random = function () {
+                if (arguments.length === 1) {
+                    if (Array.isArray(arguments[0])) {
+                        var index = Math.round(random(0, arguments[0].length - 1));
+                        return arguments[0][index];
+                    }
+                    return random(0, arguments[0]);
+                } else if (arguments.length === 2) {
+                    return Math.random() * (arguments[1] - arguments[0]) + arguments[0];
+                }
+                return 0;
+            };
+            var screenInfo = function (e) {
+                var width = Math.max(0, _w.innerWidth || _d.clientWidth || _b.clientWidth || 0),
+                    height = Math.max(0, _w.innerHeight || _d.clientHeight || _b.clientHeight || 0),
+                    scrollx = Math.max(0, _w.pageXOffset || _d.scrollLeft || _b.scrollLeft || 0) - (_d.clientLeft || 0),
+                    scrolly = Math.max(0, _w.pageYOffset || _d.scrollTop || _b.scrollTop || 0) - (_d.clientTop || 0);
+                return {
+                    width: width,
+                    height: height,
+                    ratio: width / height,
+                    centerx: width / 2,
+                    centery: height / 2,
+                    scrollx: scrollx,
+                    scrolly: scrolly
+                };
+            };
+            var mouseInfo = function (e) {
+                var screen = screenInfo(e), mousex = e ? Math.max(0, e.pageX || e.clientX || 0) : 0,
+                    mousey = e ? Math.max(0, e.pageY || e.clientY || 0) : 0;
+                return {
+                    mousex: mousex,
+                    mousey: mousey,
+                    centerx: mousex - screen.width / 2,
+                    centery: mousey - screen.height / 2
+                };
+            };
+            var Point = function (x, y) {
+                this.x = 0;
+                this.y = 0;
+                this.set(x, y);
+            };
+            Point.prototype = {
+                constructor: Point, set: function (x, y) {
+                    this.x = x || 0;
+                    this.y = y || 0;
+                }, copy: function (point) {
+                    this.x = point.x || 0;
+                    this.y = point.y || 0;
+                    return this;
+                }, multiply: function (x, y) {
+                    this.x *= x || 1;
+                    this.y *= y || 1;
+                    return this;
+                }, divide: function (x, y) {
+                    this.x /= x || 1;
+                    this.y /= y || 1;
+                    return this;
+                }, add: function (x, y) {
+                    this.x += x || 0;
+                    this.y += y || 0;
+                    return this;
+                }, subtract: function (x, y) {
+                    this.x -= x || 0;
+                    this.y -= y || 0;
+                    return this;
+                }, clampX: function (min, max) {
+                    this.x = Math.max(min, Math.min(this.x, max));
+                    return this;
+                }, clampY: function (min, max) {
+                    this.y = Math.max(min, Math.min(this.y, max));
+                    return this;
+                }, flipX: function () {
+                    this.x *= -1;
+                    return this;
+                }, flipY: function () {
+                    this.y *= -1;
+                    return this;
+                }
+            };
+            var Factory = function (options) {
+                this._canvas = null;
+                this._context = null;
+                this._sto = null;
+                this._width = 0;
+                this._height = 0;
+                this._scroll = 0;
+                this._ribbons = [];
+                this._options = {
+                    colorSaturation: "80%",
+                    colorBrightness: "60%",
+                    colorAlpha: 0.65,
+                    colorCycleSpeed: 6,
+                    verticalPosition: "center",
+                    horizontalSpeed: 200,
+                    ribbonCount: 4,
+                    strokeSize: 0,
+                    parallaxAmount: -0.5,
+                    animateSections: true
+                };
+                this._onDraw = this._onDraw.bind(this);
+                this._onResize = this._onResize.bind(this);
+                this._onScroll = this._onScroll.bind(this);
+                this.setOptions(options);
+                this.init();
+            };
+            Factory.prototype = {
+                constructor: Factory, setOptions: function (options) {
+                    if (typeof options === "object") {
+                        for (var key in options) {
+                            if (options.hasOwnProperty(key)) {
+                                this._options[key] = options[key];
+                            }
+                        }
+                    }
+                }, init: function () {
+                    try {
+                        this._canvas = document.createElement("canvas");
+                        this._canvas.style["display"] = "block";
+                        this._canvas.style["position"] = "fixed";
+                        this._canvas.style["margin"] = "0";
+                        this._canvas.style["padding"] = "0";
+                        this._canvas.style["border"] = "0";
+                        this._canvas.style["outline"] = "0";
+                        this._canvas.style["left"] = "0";
+                        this._canvas.style["top"] = "0";
+                        this._canvas.style["width"] = "100%";
+                        this._canvas.style["height"] = "100%";
+                        this._canvas.style["z-index"] = "-1";
+                        this._canvas.style["background-color"] = "#1f1f1f";
+                        this._canvas.id = "bgCanvas";
+                        this._onResize();
+                        this._context = this._canvas.getContext("2d");
+                        this._context.clearRect(0, 0, this._width, this._height);
+                        this._context.globalAlpha = this._options.colorAlpha;
+                        // 这里可以设置是否随着窗口的滚动而滚动
+                        window.addEventListener("resize", this._onResize);
+                        window.addEventListener("scroll", this._onScroll);
+                        // 这里设置添加的位置
+                        var body_ = document.getElementsByTagName('body')[0];
+                        body_.appendChild(this._canvas);
+                    } catch (e) {
+                        console.warn("Canvas Context Error: " + e.toString());
+                        return;
+                    }
+                    this._onDraw();
+                }, addRibbon: function () {
+                    var dir = Math.round(random(1, 9)) > 5 ? "right" : "left", stop = 1000, hide = 200, min = 0 - hide,
+                        max = this._width + hide, movex = 0, movey = 0, startx = dir === "right" ? min : max,
+                        starty = Math.round(random(0, this._height));
+                    if (/^(top|min)$/i.test(this._options.verticalPosition)) {
+                        starty = 0 + hide;
+                    } else if (/^(middle|center)$/i.test(this._options.verticalPosition)) {
+                        starty = this._height / 2;
+                    } else if (/^(bottom|max)$/i.test(this._options.verticalPosition)) {
+                        starty = this._height - hide;
+                    }
+                    var ribbon = [], point1 = new Point(startx, starty), point2 = new Point(startx, starty), point3 = null,
+                        color = Math.round(random(0, 360)), delay = 0;
+                    while (true) {
+                        if (stop <= 0) break;
+                        stop--;
+                        movex = Math.round((Math.random() * 1 - 0.2) * this._options.horizontalSpeed);
+                        movey = Math.round((Math.random() * 1 - 0.5) * (this._height * 0.25));
+                        point3 = new Point();
+                        point3.copy(point2);
+                        if (dir === "right") {
+                            point3.add(movex, movey);
+                            if (point2.x >= max) break;
+                        } else if (dir === "left") {
+                            point3.subtract(movex, movey);
+                            if (point2.x <= min) break;
+                        }
+                        ribbon.push({
+                            point1: new Point(point1.x, point1.y),
+                            point2: new Point(point2.x, point2.y),
+                            point3: point3,
+                            color: color,
+                            delay: delay,
+                            dir: dir,
+                            alpha: 0,
+                            phase: 0
+                        });
+                        point1.copy(point2);
+                        point2.copy(point3);
+                        delay += 4;
+                        color += this._options.colorCycleSpeed;
+                    }
+                    this._ribbons.push(ribbon);
+                }, _drawRibbonSection: function (section) {
+                    if (section) {
+                        if (section.phase >= 1 && section.alpha <= 0) {
+                            return true;
+                        }
+                        if (section.delay <= 0) {
+                            section.phase += 0.02;
+                            section.alpha = Math.sin(section.phase) * 1;
+                            section.alpha = section.alpha <= 0 ? 0 : section.alpha;
+                            section.alpha = section.alpha >= 1 ? 1 : section.alpha;
+                            if (this._options.animateSections) {
+                                var mod = Math.sin(1 + section.phase * Math.PI / 2) * 0.1;
+                                if (section.dir === "right") {
+                                    section.point1.add(mod, 0);
+                                    section.point2.add(mod, 0);
+                                    section.point3.add(mod, 0);
+                                } else {
+                                    section.point1.subtract(mod, 0);
+                                    section.point2.subtract(mod, 0);
+                                    section.point3.subtract(mod, 0);
+                                }
+                                section.point1.add(0, mod);
+                                section.point2.add(0, mod);
+                                section.point3.add(0, mod);
+                            }
+                        } else {
+                            section.delay -= 0.5;
+                        }
+                        var s = this._options.colorSaturation, l = this._options.colorBrightness,
+                            c = "hsla(" + section.color + ", " + s + ", " + l + ", " + section.alpha + " )";
+                        this._context.save();
+                        if (this._options.parallaxAmount !== 0) {
+                            this._context.translate(0, this._scroll * this._options.parallaxAmount);
+                        }
+                        this._context.beginPath();
+                        this._context.moveTo(section.point1.x, section.point1.y);
+                        this._context.lineTo(section.point2.x, section.point2.y);
+                        this._context.lineTo(section.point3.x, section.point3.y);
+                        this._context.fillStyle = c;
+                        this._context.fill();
+                        if (this._options.strokeSize > 0) {
+                            this._context.lineWidth = this._options.strokeSize;
+                            this._context.strokeStyle = c;
+                            this._context.lineCap = "round";
+                            this._context.stroke();
+                        }
+                        this._context.restore();
+                    }
+                    return false;
+                }, _onDraw: function () {
+                    for (var i = 0, t = this._ribbons.length; i < t; ++i) {
+                        if (!this._ribbons[i]) {
+                            this._ribbons.splice(i, 1);
+                        }
+                    }
+                    this._context.clearRect(0, 0, this._width, this._height);
+                    for (var a = 0; a < this._ribbons.length; ++a) {
+                        var ribbon = this._ribbons[a], numSections = ribbon.length, numDone = 0;
+                        for (var b = 0; b < numSections; ++b) {
+                            if (this._drawRibbonSection(ribbon[b])) {
+                                numDone++;
+                            }
+                        }
+                        if (numDone >= numSections) {
+                            this._ribbons[a] = null;
+                        }
+                    }
+                    if (this._ribbons.length < this._options.ribbonCount) {
+                        this.addRibbon();
+                    }
+                    requestAnimationFrame(this._onDraw);
+                }, _onResize: function (e) {
+                    var screen = screenInfo(e);
+                    this._width = screen.width;
+                    this._height = screen.height;
+                    if (this._canvas) {
+                        this._canvas.width = this._width;
+                        this._canvas.height = this._height;
+                        if (this._context) {
+                            this._context.globalAlpha = this._options.colorAlpha;
+                        }
+                    }
+                }, _onScroll: function (e) {
+                    var screen = screenInfo(e);
+                    this._scroll = screen.scrolly;
+                }
+            };
+            return Factory;
+        });
+        new Ribbons();
+    </script>
+</th:block>
+</body>
+</html>

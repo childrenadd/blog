@@ -1,0 +1,22 @@
+#开发环境
+#数据库驱动
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bloglast?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update #第一次运行需要改成create
+    show-sql: true
+#日志打印
+logging:
+  level:
+    root: info
+    com.lrm: debug
+  file:
+    name: log/blog-dev.log
+
+
+

@@ -1,0 +1,10 @@
+#顶层配置
+spring:
+  thymeleaf:
+    mode: HTML
+  profiles:
+    active: dev
+commend.avatar: https://picsum.photos/id/121/100/100
+
+
+
