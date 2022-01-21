@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/28 10:21
+ */
 @Entity(name = "t_user")
 @Table
 public class User {

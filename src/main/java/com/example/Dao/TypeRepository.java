@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/25 19:21
+ */
 public interface TypeRepository extends JpaRepository<Type,Long> {
     Type findByName(String name);
     @Query("select t from t_type t")

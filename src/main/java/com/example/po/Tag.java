@@ -5,6 +5,10 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/28 09:55
+ */
 @Entity(name = "t_tag")
 @Table
 public class Tag {

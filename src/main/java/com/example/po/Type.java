@@ -6,6 +6,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/28 10:45
+ */
 @Entity(name = "t_type")
 @Table
 public class Type {

@@ -11,6 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/24 21:00
+ */
 public interface BolgRepository extends JpaRepository<Blog,Long> , JpaSpecificationExecutor<Blog> {
     @Query("select t from t_blog t where t.recommend = true")
     List<Blog> findTop(Pageable pageable);//最新推荐排序

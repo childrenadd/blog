@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/27 08:53
+ */
 @Entity(name = "t_commend")
 @Table
 public class Commend {

@@ -11,7 +11,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-
+/**
+ * @author wxy
+ * @date 2021/5/21 21:22
+ */
 @Aspect
 @Component
 public class LogAspect {

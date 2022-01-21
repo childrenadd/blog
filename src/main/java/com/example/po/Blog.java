@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author wxy
+ * @date 2021/5/27 08:22
+ */
 @Entity(name = "t_blog")
 @Table
 public class Blog {
@@ -13,7 +17,7 @@ public class Blog {
     private Long id;
     private String title;
     @Basic(fetch = FetchType.LAZY)
-    @Lob
+    @Lob//大字段声明
     private String content;
     private String firstPicture;
     private String flag;
