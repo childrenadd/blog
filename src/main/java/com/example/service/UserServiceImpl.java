@@ -2,7 +2,6 @@ package com.example.service;
 
 import com.example.Dao.UserRepository;
 import com.example.po.User;
-import com.example.util.MD5util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Override
     public User checkUser(String username, String password) {
-        User user = userRepository.findByUsernameAndPassword(username, MD5util.code(password));//查询数据库
+        User user = userRepository.findByUsernameAndPassword(username, password);//查询数据库
         return user;
     }
 }

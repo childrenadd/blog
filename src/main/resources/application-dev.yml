@@ -10,6 +10,9 @@ spring:
     hibernate:
       ddl-auto: update #第一次运行需要改成create
     show-sql: true
+  redis:
+    host: localhost
+    port: 6379
 #日志打印
 logging:
   level:

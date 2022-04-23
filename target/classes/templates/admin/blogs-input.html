@@ -132,6 +132,7 @@
         </div>
         <div class="ui error message"></div>
         <div class="ui right aligned container">
+          <button type="button" id="token-btn" class="ui purple basic button">Token</button>
           <button type="button" class="ui button" onclick="window.history.go(-1)">返回</button>
           <button type="button" id="save-btn" class="ui secondary button">保存</button>
           <button type="button" id="publish-btn" class="ui teal button">发布</button>
@@ -179,7 +180,9 @@
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script src="/lib/editormd/editormd.min.js" ></script>
 
-<script>
+<script th:inline="javascript">
+  var token = [[${token}]];
+  document.cookie=token;
   var contentEditor;
   $(function() {
     contentEditor = editormd("md-content", {
@@ -194,6 +197,24 @@
   });
   $('.ui.dropdown').dropdown({
     on:'hover'
+  });
+  $('#token-btn').click(function (){
+    var data = document.cookie.split(";")[0];
+    $.ajax({
+      url: '/admin/hello',
+      cache: false,
+      async: true,
+      data: data,
+      type: 'GET',
+      contentType: 'application/json; charset=UTF-8',
+      beforeSend: function(request) {
+        request.setRequestHeader("Authorization",data);
+      },
+      dataType: "json",
+      success: function (res) {
+        console.log(res);
+      }
+    });
   });
   $('#save-btn').click(function (){
     $('[name="published"]').val(false);

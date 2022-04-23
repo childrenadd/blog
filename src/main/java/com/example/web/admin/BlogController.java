@@ -9,6 +9,7 @@ import com.example.vo.BlogQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -33,6 +35,8 @@ public class BlogController {
     private TypeService typeService;
     @Autowired
     private TagService tagService;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
     @GetMapping("/blogs")//博客列表
     public String blogs(@PageableDefault(size = 20,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable,
                         BlogQuery blog, Model model){
@@ -47,10 +51,15 @@ public class BlogController {
         return "admin/blogs :: blogList";
     }
     @GetMapping("/blogs/input")
-    public String input(Model model){
+    public ModelAndView input(Model model){
+        ModelAndView modelAndView = new ModelAndView();
         setTypeAndTag(model);//初始化分类和标签
         model.addAttribute("blog",new Blog());
-        return INPUT;
+        modelAndView.addObject("token",redisTemplate.keys("TOKEN*").iterator().next());
+        modelAndView.setViewName(INPUT);
+        //System.out.println("ppppppppppppppppppppppp"+redisTemplate.keys("TOKEN*").iterator().next());
+        return modelAndView;
+
     }
     private void setTypeAndTag(Model model){
         model.addAttribute("types",typeService.listType());
