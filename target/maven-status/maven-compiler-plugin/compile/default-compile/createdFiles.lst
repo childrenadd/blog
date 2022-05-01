@@ -1,10 +1,13 @@
 com\example\po\User.class
 com\example\service\TypeServiceImpl.class
+com\example\util\Result.class
 com\example\web\IndexController.class
+com\example\util\LoginParam.class
 com\example\Dao\TagRepository.class
 com\example\web\TagShowController.class
 com\example\web\CommentController.class
 com\example\web\TypeShowController.class
+com\example\util\ErrorCode.class
 com\example\service\CommentService.class
 com\example\service\UserServiceImpl.class
 com\example\vo\BlogQuery.class
@@ -22,6 +25,7 @@ com\example\service\TypeService.class
 com\example\handler\ControllerExceptionHandler.class
 com\example\interceptor\LoginInterceptor.class
 com\example\util\MD5util.class
+com\example\util\LoginUserVo.class
 com\example\Dao\TypeRepository.class
 com\example\interceptor\WebConfig.class
 com\example\po\Type.class
@@ -31,6 +35,7 @@ com\example\po\Tag.class
 com\example\aspect\LogAspect$RequestLog.class
 com\example\Dao\UserRepository.class
 com\example\NotFoundException.class
+com\example\service\LoginServiceImpl.class
 com\example\web\admin\LoginController.class
 com\example\web\admin\BlogController.class
 com\example\util\MarkdownUtils$1.class
@@ -43,3 +48,5 @@ com\example\service\BlogService.class
 com\example\web\AboutController.class
 com\example\service\UserService.class
 com\example\service\TagService.class
+com\example\service\LoginService.class
+com\example\util\JWTUtils.class
