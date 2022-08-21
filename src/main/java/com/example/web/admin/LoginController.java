@@ -37,7 +37,11 @@ public class LoginController {
             session.setAttribute("user",result.getUser());
             modelAndView.addObject("token","TOKEN_"+(String)result.getData());
             modelAndView.setViewName("admin/index");
-        }
+        }/*else{
+            attributes.addFlashAttribute("message","用户名和密码错误");
+            modelAndView.addObject("model","new ModelAttribute()");
+            modelAndView.setViewName("redirect:/admin");
+        }*/
         /*Set<String> token = redisTemplate.keys("TOKEN*");
         System.out.println("ddddddddddddddddddddd"+token);*/
         return modelAndView;
